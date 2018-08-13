@@ -27,6 +27,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         _contentSize = frame.size;
+        
         _gestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(moveScrollView:)];
         [self addGestureRecognizer:_gestureRecognizer];
     }
@@ -42,17 +43,16 @@
     
     if (newX < 0)
         newX = 0;
-    if (newY < 0)
-        newY = 0;
-    
-    if (newX + self.superview.frame.size.width > self.contentSize.width )
+    else if (newX + self.superview.frame.size.width > self.contentSize.width )
         newX = self.contentSize.width - self.superview.frame.size.width;
 
-    if (newY + self.superview.frame.size.height > self.contentSize.height )
+    if (newY < 0)
+        newY = 0;
+    else if (newY + self.superview.frame.size.height > self.contentSize.height )
         newY = self.contentSize.height - self.superview.frame.size.height;
     NSLog (@"new X %f and Y %f", newX, newY);
     
-    [self setBounds:CGRectMake(newX, newY, self.frame.size.width, self.frame.size.height)];
+    [self setBounds:CGRectMake(newX, newY, self.bounds.size.width, self.bounds.size.height)];
     
     [sender setTranslation:CGPointZero inView:self];
 }
